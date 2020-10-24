@@ -5,8 +5,8 @@
  {     
  //initialize bacteria variables here   
   size(500, 500);
-  bob = new Predator[1];
-  tim = new Prey[1];
+  bob = new Predator[5];
+  tim = new Prey[10];
   for (int i = 0; i < bob.length; i++) {
     bob[i] = new Predator();
   }
@@ -17,26 +17,32 @@
  void draw()   
  {    
  	background(0);
- 	//move and show the bacteria  
- 	for (int i = 0; i < tim.length; i++) {
-    tim[i].show();
-    if (mouseX > tim[i].myX+15 && mouseY > tim[i].myY+15) {
-      tim[i].myX = tim[i].myX +(int)(Math.random()*5)-1;
-      tim[i].myY = tim[i].myY +(int)(Math.random()*5)-1;
-    } else if (mouseX < tim[i].myX+25 && mouseY < tim[i].myY+25) {
-      tim[i].myX = tim[i].myX +(int)(Math.random()*5)-3;
-      tim[i].myY = tim[i].myY +(int)(Math.random()*5)-3;
-    } else {
+ 	for (int j = 0; j < bob.length; j++) {
+    bob[j].show();
+    bob[j].move();
+    for (int i = 0; i < tim.length; i++) {
+      tim[i].show(); 
       tim[i].move();
+      if (dist(bob[j].myX, bob[j].myY, tim[i].myX, tim[i].myY) > 50) {
+        bob[j].myX = bob[j].myX + (int)(Math.random()*5)-2;
+        bob[j].myY = bob[j].myY + (int)(Math.random()*5)-2;
+      } else if ((dist(bob[j].myX, bob[j].myY) >= width) || (dist(bob[j].myX, bob[j].myY) >= height)) {
+        bob[j].myX = bob[j].myX+ (int)(Math.random()*100)+20;
+        bob[j].myY = bob[j].myY+ (int)(Math.random()*100)+20;
+      }
+      else if((dist(tim[i].myX, tim[i].myY) >= width) || (dist(tim[i].myX, tim[i].myY) >= height)){
+      	tim[i].myX = tim[i].myX+ (int)(Math.random()*100)+20;
+        tim[i].myY = tim[i].myY+ (int)(Math.random()*100)+20;
+      }
     }
-  } 
- }  
+ }
+} 
 
 class Predator   
 { 
   int myX, myY, mySize;
   Predator() {
-    myX = (int)(Math.random()*250);
+    myX = (int)(Math.random()*250)+30;
     myY = 250;
     mySize = 20;
   }
@@ -55,7 +61,7 @@ class Prey
 {
   int myX, myY, mySize;
   Prey(int x, int y) {
-    myX = (int)(Math.random()*250);
+    myX = (int)(Math.random()*250)+30;
     myY = 250;
     mySize = 20;
     myX = x;
